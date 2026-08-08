@@ -1,0 +1,38 @@
+Table users {
+  id integer [pk, increment]
+  fullname varchar
+  email varchar [unique]
+  username varchar [unique]
+  password varchar
+}
+
+Table datasets {
+  id integer [pk, increment]
+  dataset_name varchar
+  file_name varchar
+  uploaded_by integer
+  created_at datetime
+}
+
+Table labels {
+  id integer [pk, increment]
+  dataset_id integer
+  label_name varchar
+  label_value varchar
+}
+
+Table reviews {
+  id integer [pk, increment]
+  dataset_id integer
+  reviewer_id integer
+  status varchar
+  comments text
+}
+
+Ref: users.id < datasets.uploaded_by
+
+Ref: datasets.id < labels.dataset_id
+
+Ref: users.id < reviews.reviewer_id
+
+Ref: datasets.id < reviews.dataset_id
