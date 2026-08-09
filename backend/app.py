@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
+from agent import run_agent
 
 app = FastAPI(title="AI Dataset Labeling Marketplace")
 
@@ -44,6 +45,10 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     username: str
     password: str
+
+
+class AgentRequest(BaseModel):
+    data: list
 
 
 @app.get("/")
@@ -112,3 +117,10 @@ def login(user: UserLogin):
         "message": "Login successful",
         "username": existing_user.username
     }
+
+
+@app.post("/agent/run")
+def run_agent_endpoint(request: AgentRequest):
+    result = run_agent(request.data)
+
+    return result
