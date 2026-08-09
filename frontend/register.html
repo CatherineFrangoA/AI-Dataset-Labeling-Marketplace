@@ -20,25 +20,25 @@
 
     <h2>Register</h2>
 
-    <form>
+    <form onsubmit="registerUser(event)">
 
         <label>Full Name</label><br>
-        <input type="text" placeholder="Enter Full Name" required>
+        <input type="text" id="fullname" placeholder="Enter Full Name" required>
 
         <br><br>
 
         <label>Email</label><br>
-        <input type="email" placeholder="Enter Email" required>
+        <input type="email" id="email" placeholder="Enter Email" required>
 
         <br><br>
 
         <label>Username</label><br>
-        <input type="text" placeholder="Choose Username" required>
+        <input type="text" id="username" placeholder="Choose Username" required>
 
         <br><br>
 
         <label>Password</label><br>
-        <input type="password" placeholder="Create Password" required>
+        <input type="password" id="password" placeholder="Create Password" required>
 
         <br><br>
 
@@ -51,6 +51,8 @@
     <a href="login.html">Already have an account? Login</a>
 
 </div>
+
+<script src="script.js"></script>
 
 </body>
 
