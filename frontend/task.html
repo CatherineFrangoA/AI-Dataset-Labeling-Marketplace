@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>Task Management</h1>
+
+    <h2>Complete Task</h2>
+
+    <label>Task ID:</label>
+    <input type="number" id="taskId" value="1">
+
+    <br><br>
+
+    <button onclick="completeTask()">Complete Task</button>
+
+    <pre id="taskResult">Waiting...</pre>
+
+
+    <h2>Review Task</h2>
+
+    <label>Task ID:</label>
+    <input type="number" id="reviewTaskId" value="1">
+
+    <br><br>
+
+    <label>Reviewer ID:</label>
+    <input type="number" id="reviewerId" value="1">
+
+    <br><br>
+
+    <label>Review Status:</label>
+    <select id="reviewStatus">
+        <option value="approved">Approved</option>
+        <option value="rejected">Rejected</option>
+    </select>
+
+    <br><br>
+
+    <button onclick="submitReview()">Submit Review</button>
+
+    <pre id="reviewResult">Waiting...</pre>
+
+
+    <script>
+
+        async function completeTask() {
+
+            const taskId = document.getElementById("taskId").value;
+
+            const response = await fetch(
+                `http://127.0.0.1:8000/api/task/complete/${taskId}`,
+                {
+                    method: "PUT"
+                }
+            );
+
+            const result = await response.json();
+
+            document.getElementById("taskResult").textContent =
+                JSON.stringify(result, null, 2);
+        }
+
+
+        async function submitReview() {
+
+            const taskId = document.getElementById("reviewTaskId").value;
+            const reviewerId = document.getElementById("reviewerId").value;
+            const status = document.getElementById("reviewStatus").value;
+
+            const response = await fetch(
+                `http://127.0.0.1:8000/api/review/submit?task_id=${taskId}&reviewer_id=${reviewerId}&status=${status}`,
+                {
+                    method: "POST"
+                }
+            );
+
+            const result = await response.json();
+
+            document.getElementById("reviewResult").textContent =
+                JSON.stringify(result, null, 2);
+        }
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Dataset Labeling Agent</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>AI Dataset Labeling Agent</h1>
+
+    <textarea id="dataInput" rows="8" cols="50"
+        placeholder="Enter data separated by commas"></textarea>
+
+    <br><br>
+
+    <button onclick="runAgent()">Run AI Agent</button>
+
+    <div>
+        <h2>Perceive</h2>
+        <pre id="perceive">Waiting...</pre>
+    </div>
+
+    <div>
+        <h2>Plan</h2>
+        <pre id="plan">Waiting...</pre>
+    </div>
+
+    <div>
+        <h2>Act</h2>
+        <pre id="act">Waiting...</pre>
+    </div>
+
+    <div>
+        <h2>Observe</h2>
+        <pre id="observe">Waiting...</pre>
+    </div>
+
+    <script>
+        async function runAgent() {
+            const input = document.getElementById("dataInput").value;
+
+            const data = input
+                .split(",")
+                .map(item => item.trim())
+                .filter(item => item !== "");
+
+            const response = await fetch(
+                "http://127.0.0.1:8000/agent/run",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        data: data
+                    })
+                }
+            );
+
+            const result = await response.json();
+
+            document.getElementById("perceive").textContent =
+                JSON.stringify(result.perceive, null, 2);
+
+            document.getElementById("plan").textContent =
+                JSON.stringify(result.plan, null, 2);
+
+            document.getElementById("act").textContent =
+                JSON.stringify(result.act, null, 2);
+
+            document.getElementById("observe").textContent =
+                JSON.stringify(result.observe, null, 2);
+        }
+    </script>
+
+</body>
+</html>
