@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Dataset Labeling Marketplace</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -16,18 +16,97 @@
     </header>
 
     <div class="container">
+
         <h2>Welcome</h2>
+
+        <p id="userRole"></p>
 
         <p>
             Welcome to the AI Dataset Labeling Marketplace.
             This platform helps users upload datasets,
             label data, review labels, and manage AI datasets efficiently.
         </p>
-        <a href="login.html">
-            <button>Get Started</button>
-        </a>
+
+        <div id="guestOptions">
+            <a href="login.html">
+                <button>Get Started</button>
+            </a>
+        </div>
+
+        <div id="adminOptions" style="display: none;">
+            <h3>Admin Dashboard</h3>
+
+            <a href="dataset.html">
+                <button>Manage Datasets</button>
+            </a>
+
+            <br><br>
+
+            <a href="task.html">
+                <button>Assign Tasks</button>
+            </a>
+
+            <br><br>
+
+            <a href="agent.html">
+                <button>AI Agent</button>
+            </a>
+        </div>
+
+        <div id="labelerOptions" style="display: none;">
+            <h3>Labeler Dashboard</h3>
+
+            <a href="task.html">
+                <button>My Tasks</button>
+            </a>
+
+            <br><br>
+
+            <a href="agent.html">
+                <button>AI Agent</button>
+            </a>
+        </div>
+
+        <br>
+
+        <button id="logoutButton" style="display: none;"
+            onclick="logoutUser()">Logout</button>
+
         <p id="message"></p>
+
     </div>
+
+    <script>
+        const role = localStorage.getItem("role");
+        const username = localStorage.getItem("username");
+
+        const userRole = document.getElementById("userRole");
+        const guestOptions = document.getElementById("guestOptions");
+        const adminOptions = document.getElementById("adminOptions");
+        const labelerOptions = document.getElementById("labelerOptions");
+        const logoutButton = document.getElementById("logoutButton");
+
+        if (role && username) {
+            userRole.innerText = "Welcome, " + username + " | Role: " + role;
+
+            guestOptions.style.display = "none";
+            logoutButton.style.display = "inline-block";
+
+            if (role === "admin") {
+                adminOptions.style.display = "block";
+            } else if (role === "labeler") {
+                labelerOptions.style.display = "block";
+            }
+        } else {
+            userRole.innerText = "Please log in to continue.";
+        }
+
+        function logoutUser() {
+            localStorage.removeItem("username");
+            localStorage.removeItem("role");
+            window.location.href = "login.html";
+        }
+    </script>
 
     <script src="script.js"></script>
 

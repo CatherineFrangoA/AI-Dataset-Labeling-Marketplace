@@ -60,6 +60,8 @@ async function loginUser(event) {
 
         if (response.ok) {
             alert("Login successful!");
+            localStorage.setItem("username",result.username);
+            localStorage.setItem("role",result.role);
             window.location.href = "index.html";
         } else {
             alert(result.detail);

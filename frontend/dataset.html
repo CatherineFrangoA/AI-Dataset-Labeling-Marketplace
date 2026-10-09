@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Upload Dataset - AI Dataset Labeling Marketplace</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>AI Dataset Labeling Marketplace</h1>
+        <p>Upload and Manage AI Datasets</p>
+    </header>
+
+    <div class="container">
+
+        <h2>Upload Dataset</h2>
+
+        <form id="datasetForm">
+
+            <label for="name">Dataset Name</label>
+            <br>
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter dataset name"
+                required
+            >
+
+            <br><br>
+
+            <label for="owner_id">Owner ID</label>
+            <br>
+            <input
+                type="number"
+                id="owner_id"
+                placeholder="Enter owner ID"
+                required
+            >
+
+            <br><br>
+
+            <label for="file">Select Dataset File</label>
+            <br>
+            <input
+                type="file"
+                id="file"
+                accept=".csv"
+                required
+            >
+
+            <br><br>
+
+            <button type="submit">Upload Dataset</button>
+
+        </form>
+
+        <br>
+
+        <p id="message"></p>
+
+        <br>
+
+        <a href="index.html">
+            <button type="button">Back to Home</button>
+        </a>
+
+    </div>
+
+    <script>
+        document.getElementById("datasetForm").addEventListener("submit", uploadDataset);
+
+        async function uploadDataset(event) {
+
+            event.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const ownerId = document.getElementById("owner_id").value;
+            const file = document.getElementById("file").files[0];
+
+            const message = document.getElementById("message");
+
+            if (!file) {
+                message.innerText = "Please select a CSV file.";
+                return;
+            }
+
+            const formData = new FormData();
+
+            formData.append("name", name);
+            formData.append("owner_id", ownerId);
+            formData.append("file", file);
+
+            try {
+
+                const response = await fetch(
+                    "http://127.0.0.1:8000/api/dataset/upload",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+                const result = await response.json();
+
+                if (response.ok) {
+
+                    message.innerText =
+                        "Dataset uploaded successfully! Dataset ID: "
+                        + result.dataset_id;
+
+                    document.getElementById("datasetForm").reset();
+
+                } else {
+
+                    message.innerText =
+                        "Upload failed: " + (result.detail || result.message);
+
+                }
+
+            } catch (error) {
+
+                message.innerText =
+                    "Cannot connect to backend.";
+
+            }
+        }
+    </script>
+
+</body>
+
+</html>

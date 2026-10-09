@@ -64,5 +64,5 @@ def login_user(user: UserLogin):
 
     return {
         "message": "Login successful",
-        "username": existing_user.username
+        "username": existing_user.username,"role":existing_user.role
     }
